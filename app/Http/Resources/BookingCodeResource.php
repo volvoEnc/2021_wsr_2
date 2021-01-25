@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FlightDirectionResource extends JsonResource
+class BookingCodeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,7 @@ class FlightDirectionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'city' => $this->airport_from->city,
-            'airport' => $this->airport_from->name,
-            'iata' => $this->airport_from->iata,
-            'date' => $request->get('date1'),
-            'time' => $this->time()
+            'code' => $this->code
         ];
     }
 }

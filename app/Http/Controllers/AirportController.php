@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Airport;
 use App\Flight;
+use App\Http\Requests\FlightsRequest;
 use App\Http\Resources\AirportItemResource;
 use App\Http\Resources\AirportsItemCollection;
 use App\Http\Resources\FlightsCollection;
@@ -29,17 +30,31 @@ class AirportController extends Controller
         return new AirportsItemCollection($airports);
     }
 
-    public function flights()
+    public function flights(FlightsRequest $request)
     {
-        $flights_to = Flight::with(['airport_to', 'airport_from'])->get();
+        $af = $request->get('from');
+        $at = $request->get('to');
 
-
-        $flights_back = Flight::with(['airport_to', 'airport_from'])->get();
-
-        $flights_back = new Collection();
+        $flightsDb = Flight::with(['airport_to', 'airport_from'])->get();
+        $flightsTo = new Collection();
+        $flightsBack = new Collection();
         $flights = new Collection();
-        $flights->add($flights_to);
-        $flights->add($flights_back);
+
+        foreach ($flightsDb as $f) {
+            if ($f->airport_to->iata == $at && $f->airport_from->iata == $af) {
+                $flightsTo->add($f);
+            }
+        }
+
+        $flights->add($flightsTo);
+        if ($request->has('date2')) {
+            foreach ($flightsDb as $f) {
+                if ($f->airport_from->iata == $at && $f->airport_to->iata == $af) {
+                    $flightsBack->add($f);
+                }
+            }
+        }
+        $flights->add($flightsBack);
 
         return new FlightsCollection($flights);
     }

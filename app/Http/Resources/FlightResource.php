@@ -18,7 +18,7 @@ class FlightResource extends JsonResource
             'flight_id' => $this->id,
             'flight_code' => $this->flight_code,
             'from' => new FlightDirectionResource($this),
-            'to' => new FlightDirectionResource($this),
+            'to' => new FlightDirectionTo($this),
             'cost' => $this->cost,
             'availability' => $this->availability
         ];

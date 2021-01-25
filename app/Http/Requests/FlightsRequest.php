@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FlightsRequest extends FormRequest
+class FlightsRequest extends ApiRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,7 +17,7 @@ class FlightsRequest extends FormRequest
             'from' => ['string', 'required', 'exists:airports,iata'],
             'to' => ['string', 'required', 'exists:airports,iata'],
             'date1' => ['required', 'date', 'date_format:Y-m-d'],
-            'date2' => ['required', 'date', 'date_format:Y-m-d'],
+            'date2' => ['date', 'date_format:Y-m-d'],
             'passengers' => ['min:1', 'max:8', 'numeric']
         ];
     }
